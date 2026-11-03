@@ -157,14 +157,21 @@ export function CountUp({
   decimals = 0,
   prefix = "",
   suffix = "",
+  locale,
   className,
 }: {
   value: number
   decimals?: number
   prefix?: string
   suffix?: string
+  /** Formats with the locale's decimal separator (1.4 → 1,4 in French) */
+  locale?: string
   className?: string
 }) {
+  const format = (n: number) =>
+    locale
+      ? n.toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })
+      : n.toFixed(decimals)
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { once: true, margin: "-40px" })
   const reduce = useReducedMotion()
@@ -188,12 +195,12 @@ export function CountUp({
     <span ref={ref} className={cn("font-mono tabular-nums", className)}>
       <span className="sr-only">
         {prefix}
-        {value.toFixed(decimals)}
+        {format(value)}
         {suffix}
       </span>
       <span aria-hidden="true">
         {prefix}
-        {display.toFixed(decimals)}
+        {format(display)}
         {suffix}
       </span>
     </span>
@@ -253,5 +260,18 @@ export function Chip({ children }: { children: React.ReactNode }) {
     <span className="inline-flex items-center rounded-full border border-border bg-surface px-2.5 py-0.5 font-mono text-[11px] text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground">
       {children}
     </span>
+  )
+}
+
+// Renders **bold** segments of a translated string
+export function RichText({ text }: { text: string }) {
+  return text.split(/(\*\*[^*]+\*\*)/).map((part, i) =>
+    part.startsWith("**") && part.endsWith("**") ? (
+      <strong key={i} className="font-semibold text-foreground">
+        {part.slice(2, -2)}
+      </strong>
+    ) : (
+      part
+    ),
   )
 }

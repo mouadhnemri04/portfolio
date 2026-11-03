@@ -159,7 +159,7 @@ export interface Dictionary {
     ctaCv: string
     pipelineLabel: string
     pipeline: {
-      sources: [string, string]
+      sources: [string, string, string, string, string]
       bronze: [string, string]
       silver: [string, string]
       gold: [string, string]
@@ -173,6 +173,11 @@ export interface Dictionary {
     specTitle: string
     photoAlt: string
     spec: { key: string; value: string }[]
+    highlights: {
+      title: string
+      sub: string
+      items: { value: number; decimals?: number; prefix?: string; suffix?: string; label: string; source: string }[]
+    }
   }
   projects: {
     eyebrow: string
@@ -260,32 +265,32 @@ const en: Dictionary = {
   hero: {
     eyebrow: "DATA ENGINEER · BI & ANALYTICS",
     headline: "I build end-to-end data platforms — from raw APIs to decisions.",
-    sub: "Computer Engineer (ESPRIT) specialized in Business Intelligence & Data Engineering on the Microsoft stack: Python pipelines, Medallion architecture, dimensional modeling, Power BI & Microsoft Fabric — plus ML and generative AI on top.",
+    sub: "I'm a Data & BI Engineer. I design solutions that turn raw, scattered data into reliable, actionable dashboards. My main project was delivered at **EXCELLIA Solutions**, a subsidiary of **Majda Tunisia Group**, which includes Banque Zitouna, Zitouna Takaful, Zitouna Paiement and IZI. There I built an intelligent platform for managing project performance.",
     ctaProjects: "View projects",
     ctaCv: "Download CV",
     pipelineLabel:
-      "Animated diagram of a data pipeline: API sources flow into a Bronze raw layer, then a Silver cleaned layer, then a Gold BI-ready layer, which feeds Power BI, machine learning and an AI agent.",
+      "Animated diagram of a data pipeline: sources (APIs, ERP, databases, Excel, PDF) flow into a Bronze raw layer, then a Silver cleaned layer, then a Gold BI-ready layer, which feeds useful dashboards, machine learning and AI agents.",
     pipeline: {
-      sources: ["API Sources", "REST · JSON · CSV"],
-      bronze: ["Bronze", "raw · append-only"],
-      silver: ["Silver", "cleaned · conformed"],
-      gold: ["Gold", "star schema · BI-ready"],
-      outputs: ["Power BI", "ML", "AI Agent"],
+      sources: ["API", "ERP", "DB", "Excel", "PDF"],
+      bronze: ["Bronze", "raw data"],
+      silver: ["Silver", "cleaned data"],
+      gold: ["Gold", "business data"],
+      outputs: ["Useful\ndashboards", "Machine\nLearning", "AI Agents"],
     },
   },
   about: {
     eyebrow: "// 01 — ABOUT",
-    title: "Data plumbing, done like product design.",
+    title: "Data engineering, from raw data to business insights.",
     paragraphs: [
-      "I'm a Computer Engineer from ESPRIT, specialized in Business Intelligence and Data Engineering. I like the unglamorous parts — flaky APIs, messy CSVs, inconsistent keys — because that's where trust in data is won or lost.",
-      "My default stack is Microsoft: Python for ingestion, a Medallion architecture for structure, dimensional models for clarity, and Power BI or Microsoft Fabric for the last mile. On top of that I layer ML models and LLM-powered agents, so the platform doesn't just report — it predicts and answers.",
-      "I care about the people at the end of the pipeline. Every KPI I ship starts with a conversation with the person who will make a decision with it.",
+      "I'm a computer science engineer specialized in **Data Engineering and Business Intelligence**. I build data warehouses, automate ETL pipelines, and develop dashboards that turn complex data into reliable business insights.",
+      "My main project was developed at **EXCELLIA Solutions**, a subsidiary of **Majda Tunisia Group**, alongside major companies such as Banque Zitouna and IZI. I built an intelligent project performance platform using Python, PostgreSQL, Power BI, Machine Learning, and a Medallion architecture (Bronze, Silver, Gold).",
+      "I'm particularly interested in **modern data platforms and cloud technologies**, including **Microsoft Fabric, Azure, and AWS**. I'm currently looking for a full-time opportunity as a **Data Engineer**, **BI Engineer**, or **Data Analyst**.",
     ],
     specTitle: "profile.yaml",
     photoAlt: "Portrait of Mouadh Nemri",
     spec: [
       { key: "name", value: "Mouadh Nemri" },
-      { key: "role", value: "Data Engineer · BI Engineer" },
+      { key: "role", value: "Data & BI Engineer" },
       { key: "education", value: "Computer Engineering — ESPRIT" },
       { key: "specialty", value: "Business Intelligence & Data Engineering" },
       { key: "stack", value: "Python · SQL · PySpark · Power BI · Fabric" },
@@ -294,6 +299,20 @@ const en: Dictionary = {
       { key: "based_in", value: "Tunis, Tunisia" },
       { key: "status", value: "open_to_opportunities: true" },
     ],
+    highlights: {
+      title: "Career highlights",
+      sub: "Measurable outcomes from my professional experiences to date.",
+      items: [
+        { value: 1.4, decimals: 1, suffix: "M+", label: "Rows integrated into a data warehouse", source: "Meninx Holding · Talend ETL" },
+        { value: 25, suffix: "K+", label: "Rows ingested from APIs", source: "EXCELLIA · Python pipeline" },
+        { value: 40, prefix: "−", suffix: "%", label: "Manual data collection time", source: "EXCELLIA · API automation" },
+        { value: 35, prefix: "−", suffix: "%", label: "Data preparation time", source: "Meninx Holding · staging & quality checks" },
+        { value: 90, suffix: "%", label: "Accuracy of predictive models", source: "EXCELLIA · Machine Learning" },
+        { value: 30, label: "DAX measures in a dashboard adopted by 3 managers", source: "EXCELLIA · Power BI" },
+        { value: 12, label: "KPIs defined with 6 decision-makers", source: "Meninx Holding · requirements" },
+        { value: 3, prefix: "≈", suffix: " h", label: "Saved every week by automated flows", source: "EXCELLIA · Power Automate" },
+      ],
+    },
   },
   experience: {
     eyebrow: "// 02 — EXPERIENCE",
@@ -807,32 +826,32 @@ const fr: Dictionary = {
   hero: {
     eyebrow: "DATA ENGINEER · BI & ANALYTICS",
     headline: "Je construis des plateformes data de bout en bout — des API brutes aux décisions.",
-    sub: "Ingénieur en informatique (ESPRIT) spécialisé en Business Intelligence & Data Engineering sur la stack Microsoft : pipelines Python, architecture Medallion, modélisation dimensionnelle, Power BI & Microsoft Fabric — avec du ML et de l'IA générative par-dessus.",
+    sub: "Je suis Ingénieur Data & BI. Je conçois des solutions qui transforment des données brutes et dispersées en tableaux de bord fiables et exploitables. Mon projet principal a été réalisé chez **EXCELLIA Solutions**, filiale du **Groupe Majda Tunisia**, qui regroupe notamment Banque Zitouna, Zitouna Takaful, Zitouna Paiement et IZI. J'y ai développé une plateforme intelligente de pilotage de la performance des projets.",
     ctaProjects: "Voir les projets",
     ctaCv: "Télécharger le CV",
     pipelineLabel:
-      "Diagramme animé d'un pipeline de données : les sources API alimentent une couche Bronze brute, puis une couche Silver nettoyée, puis une couche Gold prête pour la BI, qui alimente Power BI, le machine learning et un agent IA.",
+      "Diagramme animé d'un pipeline de données : les sources (API, ERP, bases de données, Excel, PDF) alimentent une couche Bronze brute, puis une couche Silver nettoyée, puis une couche Gold prête pour la BI, qui alimente des tableaux de bord utiles, le machine learning et des agents IA.",
     pipeline: {
-      sources: ["Sources API", "REST · JSON · CSV"],
-      bronze: ["Bronze", "brut · append-only"],
-      silver: ["Silver", "nettoyé · conforme"],
-      gold: ["Gold", "schéma en étoile · BI"],
-      outputs: ["Power BI", "ML", "Agent IA"],
+      sources: ["API", "ERP", "BD", "Excel", "PDF"],
+      bronze: ["Bronze", "données brutes"],
+      silver: ["Silver", "données nettoyées"],
+      gold: ["Gold", "données métier"],
+      outputs: ["Tableaux de bord\nutiles", "Machine\nLearning", "Agents IA"],
     },
   },
   about: {
     eyebrow: "// 01 — À PROPOS",
-    title: "La plomberie data, pensée comme un produit.",
+    title: "Le data engineering, de la donnée brute à la décision métier.",
     paragraphs: [
-      "Je suis ingénieur en informatique diplômé de l'ESPRIT, spécialisé en Business Intelligence et Data Engineering. J'aime les parties ingrates — API instables, CSV désordonnés, clés incohérentes — car c'est là que la confiance dans la donnée se gagne ou se perd.",
-      "Ma stack par défaut est Microsoft : Python pour l'ingestion, une architecture Medallion pour la structure, des modèles dimensionnels pour la clarté, et Power BI ou Microsoft Fabric pour le dernier kilomètre. Par-dessus, j'ajoute des modèles ML et des agents LLM, pour que la plateforme ne fasse pas que rapporter — elle prédit et répond.",
-      "Je pense aux personnes en bout de pipeline. Chaque KPI que je livre commence par une conversation avec la personne qui prendra une décision grâce à lui.",
+      "Je suis ingénieur en informatique spécialisé en **Data Engineering et Business Intelligence**. Je conçois des entrepôts de données, j'automatise des pipelines ETL et je développe des tableaux de bord qui transforment des données complexes en informations métier fiables.",
+      "Mon projet principal a été réalisé chez **EXCELLIA Solutions**, filiale du **Groupe Majda Tunisia**, aux côtés de grandes entreprises comme Banque Zitouna et IZI. J'y ai développé une plateforme intelligente de pilotage de la performance des projets avec Python, PostgreSQL, Power BI, le Machine Learning et une architecture Medallion (Bronze, Silver, Gold).",
+      "Je m'intéresse particulièrement aux **plateformes data modernes et aux technologies cloud**, notamment **Microsoft Fabric, Azure et AWS**. Je recherche actuellement un poste à temps plein de **Data Engineer**, **BI Engineer** ou **Data Analyst**.",
     ],
     specTitle: "profil.yaml",
     photoAlt: "Portrait de Mouadh Nemri",
     spec: [
       { key: "nom", value: "Mouadh Nemri" },
-      { key: "rôle", value: "Data Engineer · BI Engineer" },
+      { key: "rôle", value: "Data & BI Engineer" },
       { key: "formation", value: "Génie informatique — ESPRIT" },
       { key: "spécialité", value: "Business Intelligence & Data Engineering" },
       { key: "stack", value: "Python · SQL · PySpark · Power BI · Fabric" },
@@ -841,6 +860,20 @@ const fr: Dictionary = {
       { key: "basé_à", value: "Tunis, Tunisie" },
       { key: "statut", value: "ouvert_aux_opportunités: true" },
     ],
+    highlights: {
+      title: "Impact en chiffres",
+      sub: "Des résultats mesurables issus de mes expériences professionnelles.",
+      items: [
+        { value: 1.4, decimals: 1, suffix: "M+", label: "Lignes intégrées dans un entrepôt de données", source: "Meninx Holding · ETL Talend" },
+        { value: 25, suffix: "K+", label: "Lignes ingérées depuis des API", source: "EXCELLIA · pipeline Python" },
+        { value: 40, prefix: "−", suffix: "%", label: "De temps de collecte manuelle", source: "EXCELLIA · automatisation API" },
+        { value: 35, prefix: "−", suffix: "%", label: "De temps de préparation des données", source: "Meninx Holding · staging & contrôles qualité" },
+        { value: 90, suffix: "%", label: "De précision des modèles prédictifs", source: "EXCELLIA · Machine Learning" },
+        { value: 30, label: "Mesures DAX dans un tableau de bord adopté par 3 managers", source: "EXCELLIA · Power BI" },
+        { value: 12, label: "KPI définis avec 6 décideurs", source: "Meninx Holding · recueil des besoins" },
+        { value: 3, prefix: "≈", suffix: " h", label: "Gagnées chaque semaine grâce aux flux automatisés", source: "EXCELLIA · Power Automate" },
+      ],
+    },
   },
   experience: {
     eyebrow: "// 02 — EXPÉRIENCES",
@@ -1267,32 +1300,32 @@ const de: Dictionary = {
   hero: {
     eyebrow: "DATA ENGINEER · BI & ANALYTICS",
     headline: "Ich baue End-to-End-Datenplattformen — von rohen APIs bis zur Entscheidung.",
-    sub: "Informatikingenieur (ESPRIT), spezialisiert auf Business Intelligence & Data Engineering mit dem Microsoft-Stack: Python-Pipelines, Medallion-Architektur, dimensionale Modellierung, Power BI & Microsoft Fabric — ergänzt durch ML und generative KI.",
+    sub: "Ich bin Data & BI Engineer. Ich entwickle Lösungen, die rohe, verstreute Daten in zuverlässige, nutzbare Dashboards verwandeln. Mein Hauptprojekt habe ich bei **EXCELLIA Solutions** umgesetzt, einer Tochtergesellschaft der **Majda Tunisia Group**, zu der unter anderem Banque Zitouna, Zitouna Takaful, Zitouna Paiement und IZI gehören. Dort habe ich eine intelligente Plattform zur Steuerung der Projektperformance entwickelt.",
     ctaProjects: "Projekte ansehen",
     ctaCv: "Lebenslauf herunterladen",
     pipelineLabel:
-      "Animiertes Diagramm einer Datenpipeline: API-Quellen fließen in eine Bronze-Rohschicht, dann in eine bereinigte Silver-Schicht, dann in eine BI-fertige Gold-Schicht, die Power BI, Machine Learning und einen KI-Agenten speist.",
+      "Animiertes Diagramm einer Datenpipeline: Quellen (APIs, ERP, Datenbanken, Excel, PDF) fließen in eine Bronze-Rohschicht, dann in eine bereinigte Silver-Schicht, dann in eine BI-fertige Gold-Schicht, die nützliche Dashboards, Machine Learning und KI-Agenten speist.",
     pipeline: {
-      sources: ["API-Quellen", "REST · JSON · CSV"],
-      bronze: ["Bronze", "roh · append-only"],
-      silver: ["Silver", "bereinigt · vereinheitlicht"],
-      gold: ["Gold", "Sternschema · BI-fertig"],
-      outputs: ["Power BI", "ML", "KI-Agent"],
+      sources: ["API", "ERP", "DB", "Excel", "PDF"],
+      bronze: ["Bronze", "Rohdaten"],
+      silver: ["Silver", "bereinigte Daten"],
+      gold: ["Gold", "Geschäftsdaten"],
+      outputs: ["Nützliche\nDashboards", "Machine\nLearning", "KI-Agenten"],
     },
   },
   about: {
     eyebrow: "// 01 — ÜBER MICH",
-    title: "Datenklempnerei, gedacht wie Produktdesign.",
+    title: "Data Engineering, von Rohdaten zu Business-Insights.",
     paragraphs: [
-      "Ich bin Informatikingenieur der ESPRIT, spezialisiert auf Business Intelligence und Data Engineering. Ich mag die unspektakulären Teile — instabile APIs, unordentliche CSVs, inkonsistente Schlüssel —, denn genau dort wird Vertrauen in Daten gewonnen oder verloren.",
-      "Mein Standard-Stack ist Microsoft: Python für die Ingestion, eine Medallion-Architektur für die Struktur, dimensionale Modelle für die Klarheit und Power BI oder Microsoft Fabric für die letzte Meile. Darauf setze ich ML-Modelle und LLM-gestützte Agenten, damit die Plattform nicht nur berichtet — sondern vorhersagt und antwortet.",
-      "Mir sind die Menschen am Ende der Pipeline wichtig. Jeder KPI, den ich liefere, beginnt mit einem Gespräch mit der Person, die damit eine Entscheidung treffen wird.",
+      "Ich bin Informatikingenieur mit Schwerpunkt **Data Engineering und Business Intelligence**. Ich baue Data Warehouses, automatisiere ETL-Pipelines und entwickle Dashboards, die komplexe Daten in verlässliche Business-Insights verwandeln.",
+      "Mein Hauptprojekt habe ich bei **EXCELLIA Solutions** umgesetzt, einer Tochtergesellschaft der **Majda Tunisia Group**, zu der auch große Unternehmen wie Banque Zitouna und IZI gehören. Dort habe ich eine intelligente Plattform zur Steuerung der Projektperformance mit Python, PostgreSQL, Power BI, Machine Learning und einer Medallion-Architektur (Bronze, Silver, Gold) entwickelt.",
+      "Besonders interessieren mich **moderne Datenplattformen und Cloud-Technologien**, insbesondere **Microsoft Fabric, Azure und AWS**. Derzeit suche ich eine Vollzeitstelle als **Data Engineer**, **BI Engineer** oder **Data Analyst**.",
     ],
     specTitle: "profil.yaml",
     photoAlt: "Porträt von Mouadh Nemri",
     spec: [
       { key: "name", value: "Mouadh Nemri" },
-      { key: "rolle", value: "Data Engineer · BI Engineer" },
+      { key: "rolle", value: "Data & BI Engineer" },
       { key: "ausbildung", value: "Informatikingenieur — ESPRIT" },
       { key: "schwerpunkt", value: "Business Intelligence & Data Engineering" },
       { key: "stack", value: "Python · SQL · PySpark · Power BI · Fabric" },
@@ -1301,6 +1334,20 @@ const de: Dictionary = {
       { key: "standort", value: "Tunis, Tunesien" },
       { key: "status", value: "offen_für_angebote: true" },
     ],
+    highlights: {
+      title: "Karriere-Highlights",
+      sub: "Messbare Ergebnisse aus meinen bisherigen Berufserfahrungen.",
+      items: [
+        { value: 1.4, decimals: 1, suffix: "M+", label: "Zeilen in ein Data Warehouse integriert", source: "Meninx Holding · Talend-ETL" },
+        { value: 25, suffix: "K+", label: "Zeilen aus APIs eingelesen", source: "EXCELLIA · Python-Pipeline" },
+        { value: 40, prefix: "−", suffix: "%", label: "Manueller Erfassungsaufwand", source: "EXCELLIA · API-Automatisierung" },
+        { value: 35, prefix: "−", suffix: "%", label: "Datenaufbereitungszeit", source: "Meninx Holding · Staging & Qualitätsprüfungen" },
+        { value: 90, suffix: "%", label: "Genauigkeit der Vorhersagemodelle", source: "EXCELLIA · Machine Learning" },
+        { value: 30, label: "DAX-Measures in einem Dashboard, genutzt von 3 Managern", source: "EXCELLIA · Power BI" },
+        { value: 12, label: "KPIs, definiert mit 6 Entscheidern", source: "Meninx Holding · Anforderungsanalyse" },
+        { value: 3, prefix: "≈", suffix: " h", label: "Pro Woche durch automatisierte Flows eingespart", source: "EXCELLIA · Power Automate" },
+      ],
+    },
   },
   experience: {
     eyebrow: "// 02 — ERFAHRUNG",

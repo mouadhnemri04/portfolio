@@ -249,7 +249,7 @@ export function Projects() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
           className={cn(
-            "max-h-[90vh] gap-6 overflow-y-auto p-5 md:p-7",
+            "max-h-[90dvh] gap-6 overflow-x-hidden overflow-y-auto p-4 sm:p-5 md:p-7",
             gallery.length || selected?.video ? "sm:max-w-4xl" : "sm:max-w-2xl",
           )}
         >
@@ -267,7 +267,7 @@ export function Projects() {
                 ) : null}
                 {project.parts ? (
                   <div className="flex flex-col gap-2">
-                    <p id="parts-hint" className="font-mono text-xs uppercase tracking-[0.2em] text-primary">
+                    <p id="parts-hint" className="font-mono text-[11px] uppercase tracking-[0.15em] text-primary sm:text-xs sm:tracking-[0.2em]">
                       {t.projects.partsHint}
                     </p>
                     <div role="tablist" aria-describedby="parts-hint" className="grid gap-2 sm:grid-cols-3">

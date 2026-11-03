@@ -6,7 +6,7 @@ import { ArrowRight, Download, Mail, Phone } from "lucide-react"
 import { useLocale } from "@/components/providers"
 import { LinkedinIcon } from "@/components/site/brand-icons"
 import { PipelineDiagram } from "@/components/site/pipeline-diagram"
-import { Eyebrow, Magnetic } from "@/components/site/primitives"
+import { Eyebrow, Magnetic, RichText } from "@/components/site/primitives"
 import { SkillLogo } from "@/components/site/skill-logo"
 import { profile } from "@/lib/content"
 
@@ -79,7 +79,7 @@ export function Hero() {
             {t.hero.headline}
           </motion.p>
           <motion.p variants={fadeUp} className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
-            {t.hero.sub}
+            <RichText text={t.hero.sub} />
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-3 pt-2">
             <Magnetic>

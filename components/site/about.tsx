@@ -1,41 +1,50 @@
 "use client"
 
 import { useLocale } from "@/components/providers"
-import { Reveal, Section, SectionHeader, SpotlightCard } from "@/components/site/primitives"
+import { CountUp, Reveal, RichText, Section, SectionHeader } from "@/components/site/primitives"
 
 export function About() {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
+  const h = t.about.highlights
   return (
     <Section id="about">
       <SectionHeader id="about-title" eyebrow={t.about.eyebrow} title={t.about.title} />
-      <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-12">
-        <Reveal className="flex flex-col gap-5 text-pretty text-lg leading-relaxed text-muted-foreground">
-          {t.about.paragraphs.map((p, i) => (
-            <p key={i} className={i === 0 ? "text-foreground" : undefined}>
-              {p}
-            </p>
-          ))}
-        </Reveal>
-        <Reveal delay={0.1}>
-          <SpotlightCard className="font-mono text-sm">
-            <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
-              <span className="text-xs text-muted-foreground">~/{t.about.specTitle}</span>
-              <span className="text-[11px] text-muted-foreground">{t.about.spec.length} rows</span>
+      <Reveal className="flex max-w-3xl flex-col gap-5 text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+        {t.about.paragraphs.map((p, i) => (
+          <p key={i} className={i === 0 ? "text-foreground" : undefined}>
+            <RichText text={p} />
+          </p>
+        ))}
+      </Reveal>
+
+      <Reveal className="mt-16 flex flex-col gap-3 md:mt-20">
+        <h3 className="text-fade text-balance text-2xl font-semibold tracking-[-0.03em] md:text-4xl">{h.title}</h3>
+        <p className="text-pretty text-muted-foreground md:text-lg">{h.sub}</p>
+      </Reveal>
+
+      {/* 1px gaps over a border-colored background draw the grid lines between cells */}
+      <Reveal delay={0.1} className="mt-8 md:mt-10">
+        <dl className="grid grid-cols-1 gap-px overflow-hidden rounded-3xl border border-border bg-border min-[420px]:grid-cols-2 lg:grid-cols-4">
+          {h.items.map((item) => (
+            <div key={item.label} className="flex flex-col gap-2 bg-card p-6 md:p-8">
+              <dd className="order-1 text-4xl font-semibold tracking-tight md:text-5xl">
+                <CountUp
+                  value={item.value}
+                  decimals={item.decimals}
+                  prefix={item.prefix}
+                  suffix={item.suffix}
+                  locale={locale}
+                  className="text-gradient font-sans"
+                />
+              </dd>
+              <dt className="order-2 mt-2 flex flex-col gap-2 text-pretty text-sm leading-snug text-foreground/80 md:text-base">
+                {item.label}
+                <span className="font-mono text-[11px] leading-relaxed text-muted-foreground">{item.source}</span>
+              </dt>
             </div>
-            <dl className="divide-y divide-border">
-              {t.about.spec.map((row, i) => (
-                <div key={row.key} className="grid grid-cols-[1.75rem_7.5rem_1fr] items-baseline gap-x-2 gap-y-0.5 px-4 py-2.5">
-                  <span aria-hidden="true" className="text-xs text-muted-foreground/60">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <dt className="text-primary">{row.key}:</dt>
-                  <dd className="break-words text-foreground">{row.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </SpotlightCard>
-        </Reveal>
-      </div>
+          ))}
+        </dl>
+      </Reveal>
     </Section>
   )
 }

@@ -21,11 +21,17 @@ const fill: Record<Tone, string> = {
 
 const W = 184
 const H = 60
-const OW = 104
-const OH = 44
+const OW = 120
+const OH = 48
+
+// One cube per data source, side by side on the top row
+const SW = 62
+const SH = 56
+const sourceLogos = ["/logos/api.png", "/logos/erp.png", "/logos/database.png", "/logos/excel-hd.png", "/logos/pdf.png"]
+const LOGO = 24
+const sources = sourceLogos.map((logo, i) => ({ x: 52 + i * 74, y: 50, logo }))
 
 const nodes = {
-  sources: { x: 200, y: 46, tone: "cyan" as Tone, layer: "SRC" },
   bronze: { x: 128, y: 164, tone: "bronze" as Tone, layer: "L1" },
   silver: { x: 272, y: 282, tone: "silver" as Tone, layer: "L2" },
   gold: { x: 152, y: 400, tone: "gold" as Tone, layer: "L3" },
@@ -37,18 +43,46 @@ const outputs = [
   { x: 330, y: 516 },
 ]
 
+// Shared look for every box in the diagram: depth face, tinted front, colored hairline
+const RX = 10
+const DEPTH = 5
+
+function Box({ x, y, w, h, tone }: { x: number; y: number; w: number; h: number; tone: Tone }) {
+  return (
+    <>
+      <rect
+        x={x - w / 2 + DEPTH}
+        y={y - h / 2 - DEPTH}
+        width={w}
+        height={h}
+        rx={RX}
+        className={cn("fill-card", stroke[tone])}
+        strokeOpacity={0.25}
+      />
+      <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={RX} className={cn("fill-card", stroke[tone])} strokeOpacity={0.55} />
+      <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={RX} className={fill[tone]} fillOpacity={0.08} />
+    </>
+  )
+}
+
 function curve(x1: number, y1: number, x2: number, y2: number) {
   const dy = (y2 - y1) / 2
   return `M ${x1} ${y1} C ${x1} ${y1 + dy}, ${x2} ${y2 - dy}, ${x2} ${y2}`
 }
 
-const edges: { d: string; tone: Tone }[] = [
-  { d: curve(nodes.sources.x, nodes.sources.y + H / 2, nodes.bronze.x, nodes.bronze.y - H / 2), tone: "bronze" },
-  { d: curve(nodes.bronze.x, nodes.bronze.y + H / 2, nodes.silver.x, nodes.silver.y - H / 2), tone: "silver" },
-  { d: curve(nodes.silver.x, nodes.silver.y + H / 2, nodes.gold.x, nodes.gold.y - H / 2), tone: "gold" },
+// stage = position in the flow, drives the reveal and particle timing
+const edges: { d: string; tone: Tone; stage: number }[] = [
+  ...sources.map((src) => ({
+    d: curve(src.x, src.y + SH / 2, nodes.bronze.x, nodes.bronze.y - H / 2),
+    tone: "bronze" as Tone,
+    stage: 0,
+  })),
+  { d: curve(nodes.bronze.x, nodes.bronze.y + H / 2, nodes.silver.x, nodes.silver.y - H / 2), tone: "silver", stage: 1 },
+  { d: curve(nodes.silver.x, nodes.silver.y + H / 2, nodes.gold.x, nodes.gold.y - H / 2), tone: "gold", stage: 2 },
   ...outputs.map((o) => ({
     d: curve(nodes.gold.x, nodes.gold.y + H / 2, o.x, o.y - OH / 2),
     tone: "cyan" as Tone,
+    stage: 3,
   })),
 ]
 
@@ -58,7 +92,6 @@ export function PipelineDiagram() {
   const p = t.hero.pipeline
 
   const labels: Record<keyof typeof nodes, [string, string]> = {
-    sources: p.sources,
     bronze: p.bronze,
     silver: p.silver,
     gold: p.gold,
@@ -106,7 +139,7 @@ export function PipelineDiagram() {
               strokeOpacity={0.7}
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
-              transition={{ duration: 0.9, delay: 0.3 + Math.min(i, 3) * 0.35, ease: "easeInOut" }}
+              transition={{ duration: 0.9, delay: 0.3 + e.stage * 0.35, ease: "easeInOut" }}
             />
           </g>
         ))}
@@ -118,7 +151,7 @@ export function PipelineDiagram() {
                   <animateMotion
                     dur="2.4s"
                     repeatCount="indefinite"
-                    begin={`${1.6 + Math.min(i, 3) * 0.35 + k * 0.8}s`}
+                    begin={`${1.6 + e.stage * 0.35 + k * 0.8}s`}
                     rotate="auto"
                   >
                     <mpath href={`#edge-${i}`} />
@@ -129,12 +162,41 @@ export function PipelineDiagram() {
                     keyTimes="0;0.1;0.85;1"
                     dur="2.4s"
                     repeatCount="indefinite"
-                    begin={`${1.6 + Math.min(i, 3) * 0.35 + k * 0.8}s`}
+                    begin={`${1.6 + e.stage * 0.35 + k * 0.8}s`}
                   />
                 </circle>
               )),
             )
           : null}
+
+        {sources.map((src, i) => (
+          <motion.g
+            key={`src-${i}`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 + i * 0.06 }}
+          >
+            <Box x={src.x} y={src.y} w={SW} h={SH} tone="cyan" />
+            <image
+              href={src.logo}
+              x={src.x - LOGO / 2}
+              y={src.y - SH / 2 + 7}
+              width={LOGO}
+              height={LOGO}
+              preserveAspectRatio="xMidYMid meet"
+            />
+            <text
+              x={src.x}
+              y={src.y + SH / 2 - 9}
+              textAnchor="middle"
+              className="fill-foreground font-sans"
+              fontSize={12}
+              fontWeight={600}
+            >
+              {p.sources[i]}
+            </text>
+          </motion.g>
+        ))}
 
         {(Object.keys(nodes) as (keyof typeof nodes)[]).map((key, i) => {
           const n = nodes[key]
@@ -144,18 +206,9 @@ export function PipelineDiagram() {
               key={key}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.15 + i * 0.35 }}
+              transition={{ duration: 0.5, delay: 0.5 + i * 0.35 }}
             >
-              <rect
-                x={n.x - W / 2}
-                y={n.y - H / 2}
-                width={W}
-                height={H}
-                rx={14}
-                className={cn("fill-card", stroke[n.tone])}
-                strokeOpacity={0.45}
-                strokeWidth={1}
-              />
+              <Box x={n.x} y={n.y} w={W} h={H} tone={n.tone} />
               <rect
                 x={n.x - W / 2 + 12}
                 y={n.y - 9}
@@ -204,25 +257,14 @@ export function PipelineDiagram() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 1.5 + i * 0.12 }}
           >
-            <rect
-              x={o.x - OW / 2}
-              y={o.y - OH / 2}
-              width={OW}
-              height={OH}
-              rx={12}
-              className="fill-primary stroke-primary"
-              fillOpacity={0.08}
-              strokeOpacity={0.5}
-            />
-            <text
-              x={o.x}
-              y={o.y + 4.5}
-              textAnchor="middle"
-              className="fill-foreground font-sans"
-              fontSize={13}
-              fontWeight={600}
-            >
-              {p.outputs[i]}
+            <Box x={o.x} y={o.y} w={OW} h={OH} tone="cyan" />
+            {/* "\n" in the label splits it over two centered lines */}
+            <text textAnchor="middle" className="fill-foreground font-sans" fontSize={12} fontWeight={600}>
+              {p.outputs[i].split("\n").map((line, li, all) => (
+                <tspan key={li} x={o.x} y={o.y + 4 + (li - (all.length - 1) / 2) * 14}>
+                  {line}
+                </tspan>
+              ))}
             </text>
           </motion.g>
         ))}

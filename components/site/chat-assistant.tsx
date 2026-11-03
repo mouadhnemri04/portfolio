@@ -25,6 +25,7 @@ import {
 } from "lucide-react"
 import { useLocale } from "@/components/providers"
 import { LinkedinIcon } from "@/components/site/brand-icons"
+import { RichText } from "@/components/site/primitives"
 import { answer, type Block, type Topic } from "@/lib/assistant"
 import { profile, type Locale } from "@/lib/content"
 import { cn } from "@/lib/utils"
@@ -98,7 +99,11 @@ function BlockView({ block, onAsk, onNavigate }: { block: Block; onAsk: (q: stri
       )
     }
     case "text":
-      return <p className="text-sm leading-relaxed text-foreground/90">{block.text}</p>
+      return (
+        <p className="text-sm leading-relaxed text-foreground/90">
+          <RichText text={block.text} />
+        </p>
+      )
     case "chips":
       return (
         <div className="space-y-1.5">

@@ -152,6 +152,8 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
+    /* Never let one wide element scroll the page sideways on mobile */
+    overflow-x: clip;
   }
   /* Ambient backdrop: a dot grid fading toward the edges, under soft aurora glows */
   body::before,
