@@ -236,6 +236,33 @@ function BlockView({ block, onAsk, onNavigate }: { block: Block; onAsk: (q: stri
   }
 }
 
+// On phones the panel fills the visible viewport. iOS does not shrink the page
+// when the keyboard opens, so we follow window.visualViewport instead.
+function useMobileViewport(active: boolean) {
+  const [box, setBox] = useState<{ top: number; height: number } | null>(null)
+  useEffect(() => {
+    const vv = window.visualViewport
+    const mq = window.matchMedia("(max-width: 767px)")
+    if (!active || !vv) {
+      setBox(null)
+      return
+    }
+    function update() {
+      setBox(mq.matches && vv ? { top: vv.offsetTop, height: vv.height } : null)
+    }
+    update()
+    vv.addEventListener("resize", update)
+    vv.addEventListener("scroll", update)
+    mq.addEventListener("change", update)
+    return () => {
+      vv.removeEventListener("resize", update)
+      vv.removeEventListener("scroll", update)
+      mq.removeEventListener("change", update)
+    }
+  }, [active])
+  return box
+}
+
 export function ChatAssistant() {
   const { locale } = useLocale()
   const s = strings[locale]
@@ -247,6 +274,7 @@ export function ChatAssistant() {
   const [lastLang, setLastLang] = useState<Locale | null>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  const mobileBox = useMobileViewport(open)
 
   useEffect(() => {
     // Scroll to the start of the newest message so long answers read from the top
@@ -256,7 +284,7 @@ export function ChatAssistant() {
   }, [messages, thinking])
 
   useEffect(() => {
-    if (open) inputRef.current?.focus()
+    if (open && window.matchMedia("(pointer: fine)").matches) inputRef.current?.focus()
   }, [open])
 
   async function send(text: string) {
@@ -284,7 +312,8 @@ export function ChatAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="card-modern fixed bottom-24 right-4 z-50 flex h-[min(620px,calc(100dvh-8rem))] w-[min(420px,calc(100vw-2rem))] flex-col overflow-hidden rounded-3xl bg-background/95 backdrop-blur-xl md:right-6"
+            style={mobileBox ? { top: mobileBox.top + 8, height: mobileBox.height - 16 } : undefined}
+            className="card-modern fixed inset-x-2 top-2 bottom-2 z-50 flex flex-col overflow-hidden rounded-3xl bg-background/95 backdrop-blur-xl md:inset-x-auto md:top-auto md:right-6 md:bottom-24 md:h-[min(620px,calc(100dvh-8rem))] md:w-[420px]"
           >
             <header className="flex items-center gap-3 border-b border-border px-4 py-3">
               <span className="grid size-9 place-items-center rounded-full bg-primary/10 text-primary">
@@ -377,7 +406,7 @@ export function ChatAssistant() {
                 rows={1}
                 maxLength={500}
                 placeholder={s.placeholder}
-                className="max-h-32 min-h-10 flex-1 resize-none rounded-2xl border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="max-h-32 min-h-10 flex-1 resize-none rounded-2xl border border-input bg-transparent px-3 py-2 text-base outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm"
               />
               <button
                 type="submit"
@@ -397,7 +426,10 @@ export function ChatAssistant() {
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? s.close : s.open}
         aria-expanded={open}
-        className="fixed bottom-6 right-4 z-50 grid size-14 place-items-center rounded-full bg-gradient-to-r from-primary to-teal text-primary-foreground shadow-[0_0_24px_-6px_var(--primary)] transition-shadow hover:shadow-[0_0_40px_-4px_var(--primary)] md:right-6"
+        className={cn(
+          "fixed bottom-6 right-4 z-50 grid size-14 place-items-center rounded-full bg-gradient-to-r from-primary to-teal text-primary-foreground shadow-[0_0_24px_-6px_var(--primary)] transition-shadow hover:shadow-[0_0_40px_-4px_var(--primary)] md:right-6",
+          open && "max-md:hidden",
+        )}
       >
         {open ? <X className="size-5" /> : <MessageCircle className="size-5" />}
       </button>
